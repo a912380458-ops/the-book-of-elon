@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Book of Elon — 可视化读书看板</title>
+<meta name="description" content="马斯克思想与方法论的完整可视化解读。四大篇章、马斯克算法、69条核心方法、创业实战时间线——用他自己的话，讲述如何为人类建造未来。">
+<meta property="og:title" content="The Book of Elon — 可视化读书看板">
+<meta property="og:description" content="马斯克思想与方法论的完整可视化解读。四大篇章、马斯克算法、69条核心方法——用他自己的话，讲述如何为人类建造未来。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Book of Elon — 可视化读书看板">
+<meta name="twitter:description" content="马斯克思想与方法论的完整可视化解读。四大篇章、马斯克算法、69条核心方法。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-card: #111118;
+  --bg-card-hover: #1a1a24;
+  --accent-gold: #d4a853;
+  --accent-gold-dim: #a07d3a;
+  --accent-blue: #4a9eff;
+  --accent-cyan: #22d3ee;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --accent-purple: #a78bfa;
+  --accent-orange: #f97316;
+  --accent-pink: #ec4899;
+  --text-primary: #f0ece4;
+  --text-secondary: #9ca3af;
+  --text-dim: #6b7280;
+  --border: rgba(212,168,83,0.15);
+  --glow-gold: rgba(212,168,83,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-gold-dim) var(--bg-deep);
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(212,168,83,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(74,158,255,0.04) 0%, transparent 50%);
+  animation: heroGlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+  0% { transform: translate(0,0) scale(1); }
+  100% { transform: translate(-5%,3%) scale(1.1); }
+}
+
+.hero-content { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.5s forwards;
+}
+
+.hero-title .gold { color: var(--accent-gold); }
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+
+.hero-meta-item {
+  text-align: center;
+}
+
+.hero-meta-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.hero-meta-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+
+.scroll-hint .arrow {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent-gold), transparent);
+  animation: scrollArrow 2s ease-in-out infinite;
+}
+
+@keyframes scrollArrow {
+  0%,100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(30px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* Navigation */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0.75rem 0;
+}
+
+.nav-inner::-webkit-scrollbar { display: none; }
+
+.nav-link {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-gold);
+  background: var(--glow-gold);
+}
+
+/* Sections */
+.section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--accent-gold-dim);
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  margin: 0.75rem 0;
+  line-height: 1.2;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+/* Overview Grid */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.overview-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212,168,83,0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+}
+
+.overview-card.part1::before { background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange)); }
+.overview-card.part2::before { background: linear-gradient(90deg, var(--accent-red), var(--accent-pink)); }
+.overview-card.part3::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+.overview-card.part4::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-purple)); }
+
+.oc-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.oc-part {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.part1 .oc-part { color: var(--accent-gold); }
+.part2 .oc-part { color: var(--accent-red); }
+.part3 .oc-part { color: var(--accent-blue); }
+.part4 .oc-part { color: var(--accent-green); }
+
+.oc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.oc-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.oc-chapters {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.oc-chip {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Quote Blocks */
+.quote-rail {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 2rem 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.quote-rail::-webkit-scrollbar { display: none; }
+
+.quote-card {
+  flex: 0 0 380px;
+  scroll-snap-align: start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+}
+
+.quote-card::before {
+  content: '\201C';
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  line-height: 1;
+  position: absolute;
+  top: 0.5rem;
+  left: 1.2rem;
+  color: var(--accent-gold);
+  opacity: 0.15;
+}
+
+.quote-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-weight: 300;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-source {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: var(--accent-gold-dim);
+  font-family: 'Space Mono', monospace;
+}
+
+/* The Algorithm */
+.algo-container {
+  position: relative;
+}
+
+.algo-warning {
+  text-align: center;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 12px;
+  padding: 1.25rem 2rem;
+  margin-bottom: 3rem;
+  font-size: 0.85rem;
+  color: var(--accent-red);
+}
+
+.algo-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.algo-step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 2rem;
+  align-items: start;
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.algo-step:last-child { padding-bottom: 0; }
+
+.algo-step-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.algo-step-num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+
+.algo-step:nth-child(1) .algo-step-num { background: linear-gradient(135deg, #d4a853, #b8860b); color: #000; }
+.algo-step:nth-child(2) .algo-step-num { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
+.algo-step:nth-child(3) .algo-step-num { background: linear-gradient(135deg, #4a9eff, #2563eb); color: #fff; }
+.algo-step:nth-child(4) .algo-step-num { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
+.algo-step:nth-child(5) .algo-step-num { background: linear-gradient(135deg, #a78bfa, #7c3aed); color: #fff; }
+
+.algo-step-line {
+  width: 2px;
+  flex: 1;
+  min-height: 30px;
+  background: linear-gradient(to bottom, var(--border), transparent);
+  margin-top: 0.5rem;
+}
+
+.algo-step:last-child .algo-step-line { display: none; }
+
+.algo-step-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: all 0.3s;
+}
+
+.algo-step-content:hover {
+  border-color: rgba(212,168,83,0.3);
+  transform: translateX(4px);
+}
+
+.algo-step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.algo-step-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.algo-step-example {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(212,168,83,0.05);
+  border-left: 3px solid var(--accent-gold-dim);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.algo-step-example strong { color: var(--accent-gold); font-weight: 500; }
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-gold), var(--accent-blue), var(--accent-green), var(--accent-purple));
+  opacity: 0.3;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding-left: 1.5rem;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -3.55rem;
+  top: 0.35rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.timeline-item:nth-child(1) .timeline-dot { border-color: var(--accent-gold); background: rgba(212,168,83,0.3); }
+.timeline-item:nth-child(2) .timeline-dot { border-color: var(--accent-orange); background: rgba(249,115,22,0.3); }
+.timeline-item:nth-child(3) .timeline-dot { border-color: var(--accent-blue); background: rgba(74,158,255,0.3); }
+.timeline-item:nth-child(4) .timeline-dot { border-color: var(--accent-cyan); background: rgba(34,211,238,0.3); }
+.timeline-item:nth-child(5) .timeline-dot { border-color: var(--accent-green); background: rgba(34,197,94,0.3); }
+.timeline-item:nth-child(6) .timeline-dot { border-color: var(--accent-red); background: rgba(239,68,68,0.3); }
+.timeline-item:nth-child(7) .timeline-dot { border-color: var(--accent-purple); background: rgba(167,139,250,0.3); }
+
+.timeline-year {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent-gold-dim);
+  letter-spacing: 0.1em;
+}
+
+.timeline-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+}
+
+.timeline-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.timeline-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 100px;
+  margin-top: 0.5rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.tag-paypal { background: rgba(74,158,255,0.1); color: var(--accent-blue); border: 1px solid rgba(74,158,255,0.2); }
+.tag-tesla { background: rgba(239,68,68,0.1); color: var(--accent-red); border: 1px solid rgba(239,68,68,0.2); }
+.tag-spacex { background: rgba(34,211,238,0.1); color: var(--accent-cyan); border: 1px solid rgba(34,211,238,0.2); }
+.tag-solarcity { background: rgba(34,197,94,0.1); color: var(--accent-green); border: 1px solid rgba(34,197,94,0.2); }
+
+/* Risk Cards */
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.risk-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.risk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+
+.risk-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.risk-level {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.risk-critical { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+.risk-high { background: rgba(249,115,22,0.15); color: var(--accent-orange); }
+.risk-medium { background: rgba(212,168,83,0.15); color: var(--accent-gold); }
+
+.risk-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.risk-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Methods Grid */
+.methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  counter-reset: method;
+}
+
+.method-card {
+  counter-increment: method;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  position: relative;
+  transition: all 0.3s;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.method-card:hover {
+  border-color: rgba(212,168,83,0.3);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.method-card::before {
+  content: counter(method, decimal-leading-zero);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--accent-gold-dim);
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  opacity: 0.5;
+}
+
+.method-card .highlight {
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin: 3rem 0;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  border-color: rgba(212,168,83,0.3);
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
+  letter-spacing: 0.05em;
+}
+
+/* Big Quote */
+.big-quote {
+  text-align: center;
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.big-quote::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212,168,83,0.04) 0%, transparent 70%);
+}
+
+.big-quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  font-style: italic;
+}
+
+.big-quote-text .gold { color: var(--accent-gold); font-weight: 700; }
+
+.big-quote-author {
+  margin-top: 2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-gold-dim);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 4rem 2rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.footer a {
+  color: var(--accent-gold-dim);
+  text-decoration: none;
+}
+
+/* Scroll animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mars visualization */
+.mars-visual {
+  text-align: center;
+  margin: 3rem 0;
+  position: relative;
+}
+
+.mars-orbit {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px dashed rgba(212,168,83,0.15);
+  margin: 0 auto;
+  position: relative;
+  animation: orbitSpin 30s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.mars-planet {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e87040, #c0392b, #8b1a1a);
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 40px rgba(232,112,64,0.3), inset -10px -10px 20px rgba(0,0,0,0.3);
+  animation: orbitSpin 30s linear infinite reverse;
+}
+
+.earth-planet {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #4a9eff, #2563eb, #1e3a5f);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(74,158,255,0.4);
+}
+
+.mars-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  margin-top: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* Two column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+  .algo-step { grid-template-columns: 56px 1fr; gap: 1rem; }
+  .quote-card { flex: 0 0 300px; }
+}
+
+/* Pill tags for principles */
+.principle-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.pill {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  border: 1px solid;
+  font-weight: 500;
+}
+
+.pill-gold { border-color: rgba(212,168,83,0.3); color: var(--accent-gold); background: rgba(212,168,83,0.08); }
+.pill-blue { border-color: rgba(74,158,255,0.3); color: var(--accent-blue); background: rgba(74,158,255,0.08); }
+.pill-green { border-color: rgba(34,197,94,0.3); color: var(--accent-green); background: rgba(34,197,94,0.08); }
+.pill-purple { border-color: rgba(167,139,250,0.3); color: var(--accent-purple); background: rgba(167,139,250,0.08); }
+.pill-red { border-color: rgba(239,68,68,0.3); color: var(--accent-red); background: rgba(239,68,68,0.08); }
+
+/* Progress bars */
+.progress-item { margin-bottom: 1.25rem; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.progress-label span:first-child { color: var(--text-primary); }
+.progress-label span:last-child { color: var(--accent-gold); font-family: 'Space Mono', monospace; font-size: 0.75rem; }
+
+.progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
+  width: 0;
+}
+
+.progress-fill.gold { background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange)); }
+.progress-fill.blue { background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+.progress-fill.red { background: linear-gradient(90deg, var(--accent-red), var(--accent-pink)); }
+.progress-fill.green { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+.progress-fill.purple { background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink)); }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-eyebrow">A Visual Reading Dashboard</div>
+    <h1 class="hero-title">The Book of<br><span class="gold">Elon</span></h1>
+    <p class="hero-subtitle">马斯克思想与方法论的完整可视化解读<br>——用他自己的话，讲述如何为人类建造未来</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">4</div>
+        <div class="hero-meta-label">核心篇章</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">120+</div>
+        <div class="hero-meta-label">短章节</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">69</div>
+        <div class="hero-meta-label">核心方法</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-value">371</div>
+        <div class="hero-meta-label">页码</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>向下滚动</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ===== NAV ===== -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#overview" class="nav-link">全书概览</a>
+    <a href="#quotes" class="nav-link">金句精选</a>
+    <a href="#purpose" class="nav-link">Part I 使命</a>
+    <a href="#algorithm" class="nav-link">马斯克算法</a>
+    <a href="#hardcore" class="nav-link">Part II 硬核</a>
+    <a href="#companies" class="nav-link">Part III 创业</a>
+    <a href="#humanity" class="nav-link">Part IV 人类</a>
+    <a href="#risks" class="nav-link">生存风险</a>
+    <a href="#mars" class="nav-link">火星计划</a>
+    <a href="#methods" class="nav-link">69条方法</a>
+  </div>
+</nav>
+
+<!-- ===== OVERVIEW ===== -->
+<section class="section" id="overview">
+  <div class="section-header reveal">
+    <div class="section-number">Chapter 00</div>
+    <h2 class="section-title">全书四大篇章</h2>
+    <p class="section-desc">这不是传记，而是马斯克思想的实操手册——全部内容来自他本人的采访、推文和演讲</p>
+  </div>
+
+  <div class="overview-grid">
+    <div class="overview-card part1 reveal">
+      <div class="oc-icon">🧭</div>
+      <div class="oc-part">Part I</div>
+      <div class="oc-title">追求使命</div>
+      <div class="oc-desc">找到值得为之奋斗的使命。用物理学家的思维理解世界，用第一性原理重新推导一切。工程是魔法，创造是信仰。</div>
+      <div class="oc-chapters">
+        <span class="oc-chip">有目标地生活</span>
+        <span class="oc-chip">做有用的人</span>
+        <span class="oc-chip">第一性原理</span>
+        <span class="oc-chip">极限思维</span>
+        <span class="oc-chip">工程的价值</span>
+      </div>
+    </div>
+
+    <div class="overview-card part2 reveal">
+      <div class="oc-icon">🔥</div>
+      <div class="oc-part">Part II</div>
+      <div class="oc-title">极限硬核工作</div>
+      <div class="oc-desc">睡在工厂地板上的领导力。建设特种部队式团队，用"马斯克算法"消灭一切冗余。制造是真正的护城河。</div>
+      <div class="oc-chapters">
+        <span class="oc-chip">前线领导</span>
+        <span class="oc-chip">马斯克算法</span>
+        <span class="oc-chip">疯狂紧迫感</span>
+        <span class="oc-chip">工厂即产品</span>
+        <span class="oc-chip">攻击瓶颈</span>
+      </div>
+    </div>
+
+    <div class="overview-card part3 reveal">
+      <div class="oc-icon">🚀</div>
+      <div class="oc-part">Part III</div>
+      <div class="oc-title">创建公司</div>
+      <div class="oc-desc">从 Zip2 到 PayPal、Tesla、SolarCity、SpaceX 的实战故事。每次都 All-In，每次都濒临死亡，每次都绝处逢生。</div>
+      <div class="oc-chapters">
+        <span class="oc-chip">Zip2 起步</span>
+        <span class="oc-chip">PayPal 合并</span>
+        <span class="oc-chip">Tesla 求生</span>
+        <span class="oc-chip">SpaceX 火箭</span>
+        <span class="oc-chip">All-In 哲学</span>
+      </div>
+    </div>
+
+    <div class="overview-card part4 reveal">
+      <div class="oc-icon">🌍</div>
+      <div class="oc-part">Part IV</div>
+      <div class="oc-title">为了人类</div>
+      <div class="oc-desc">丰裕时代、六大生存风险、火星殖民。人类文明的备份计划——成为多行星物种是进化级别的大事件。</div>
+      <div class="oc-chapters">
+        <span class="oc-chip">丰裕时代</span>
+        <span class="oc-chip">六大风险</span>
+        <span class="oc-chip">多行星物种</span>
+        <span class="oc-chip">殖民银河</span>
+        <span class="oc-chip">人口崩溃</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== QUOTES ===== -->
+<section class="section" id="quotes">
+  <div class="section-header reveal">
+    <div class="section-number">Golden Words</div>
+    <h2 class="section-title">书中金句</h2>
+    <p class="section-desc">马斯克最犀利、最触动人心的原话——左右滑动浏览</p>
+  </div>
+
+  <div class="quote-rail">
+    <div class="quote-card">
+      <div class="quote-text">你可以选择不平凡。普通人可以选择成为非凡的人。</div>
+      <div class="quote-source">— 关于人生选择</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">不要追求荣耀，追求工作。我每天醒来问自己："今天我怎样才能有用？"</div>
+      <div class="quote-source">— 关于使命</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">创业就像吃玻璃和凝视深渊。你必须解决自己不想解决的问题，同时公司随时可能死掉。</div>
+      <div class="quote-source">— 关于创业</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">可以犯错，但不能自信地犯错。追求比昨天少错一点。</div>
+      <div class="quote-source">— 关于认知</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">如果我们不制造东西，就没有东西。这个道理显而易见，但很多人忘了。</div>
+      <div class="quote-source">— 关于制造</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">当事情足够重要时，即使胜算不在你这边，也要去做。</div>
+      <div class="quote-source">— 关于勇气</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">SpaceX、Tesla、Neuralink 本身就是慈善——因为它们都源于对人类的爱。</div>
+      <div class="quote-source">— 关于企业使命</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">没有人每周工作 40 小时就改变了世界。</div>
+      <div class="quote-source">— 关于努力</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">我想死在火星上……只是不要以撞击的方式。</div>
+      <div class="quote-source">— 关于火星</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">设计很简单，制造才是地狱。原型容易，量产要命。</div>
+      <div class="quote-source">— 关于工程</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== BIG QUOTE ===== -->
+<div class="big-quote reveal">
+  <div class="big-quote-text">
+    "工程，在所有意义上，就是<span class="gold">魔法</span>。<br>谁不想成为一个魔法师呢？"
+  </div>
+  <div class="big-quote-author">Elon Musk</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== PART I: PURPOSE ===== -->
+<section class="section" id="purpose">
+  <div class="section-header reveal">
+    <div class="section-number">Part I</div>
+    <h2 class="section-title">追求使命 · 核心思维框架</h2>
+    <p class="section-desc">马斯克在大学时确定了影响人类未来的五大领域，并用物理学家的思维重新定义了成功</p>
+  </div>
+
+  <div class="two-col">
+    <div class="reveal">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1.5rem;">五大关键领域</h3>
+      <div class="progress-item">
+        <div class="progress-label"><span>🌐 互联网</span><span>已实现</span></div>
+        <div class="progress-bar"><div class="progress-fill gold" data-width="95"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>⚡ 可持续能源</span><span>进行中</span></div>
+        <div class="progress-bar"><div class="progress-fill green" data-width="65"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>🚀 太空探索</span><span>进行中</span></div>
+        <div class="progress-bar"><div class="progress-fill blue" data-width="45"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>🤖 人工智能</span><span>双刃剑</span></div>
+        <div class="progress-bar"><div class="progress-fill purple" data-width="55"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>🧬 基因改造</span><span>双刃剑</span></div>
+        <div class="progress-bar"><div class="progress-fill red" data-width="30"></div></div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1.5rem;">核心思维工具</h3>
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🎯 第一性原理</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">不从类比出发，从物理规律推导。火箭原材料成本仅为售价的 2%，说明有巨大优化空间。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🪄 魔杖数字</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">如果有魔杖，理论完美值是多少？然后朝那个方向努力。这是衡量优化空间的终极标尺。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🤡 白痴指数</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">最终产品价格 ÷ 原材料成本。比值越高，说明中间流程越蠢，优化空间越大。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">📉 追求更少的错误</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">不追求"正确"，追求比昨天少错一点。可以犯错，但绝不能自信地犯错。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="principle-pills reveal" style="margin-top:2.5rem; justify-content:center;">
+    <span class="pill pill-gold">80% 时间花在工程上</span>
+    <span class="pill pill-blue">好奇心驱动</span>
+    <span class="pill pill-green">创造 > 消耗</span>
+    <span class="pill pill-purple">广泛阅读</span>
+    <span class="pill pill-red">先于世界行动</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== THE ALGORITHM ===== -->
+<section class="section" id="algorithm">
+  <div class="section-header reveal">
+    <div class="section-number">The Core Method</div>
+    <h2 class="section-title">马斯克算法</h2>
+    <p class="section-desc">全书最重要的方法论——马斯克要求所有公司严格执行的五步工程流程</p>
+  </div>
+
+  <div class="algo-container">
+    <div class="algo-warning reveal">
+      ⚠️ 顺序极其重要！马斯克本人多次犯了倒着来的错误——先自动化，再优化，最后才发现那个零件根本不需要。
+    </div>
+
+    <div class="algo-steps">
+      <div class="algo-step reveal">
+        <div class="algo-step-left">
+          <div class="algo-step-num">1</div>
+          <div class="algo-step-line"></div>
+        </div>
+        <div class="algo-step-content">
+          <div class="algo-step-title">让需求变得不那么蠢</div>
+          <div class="algo-step-desc">所有需求都是某个人提出的，不是部门。你必须知道每条需求背后真实的提出者，并质疑它。聪明人提出的需求最危险——因为你更不可能去质疑。</div>
+          <div class="algo-step-example"><strong>实例：</strong>Tesla 电池包上有玻璃纤维垫。电池安全团队说"是隔音用的"，隔音团队说"是防火用的"。测试发现：有没有这个垫子，噪音完全一样。一个从没人质疑的需求，删掉后省了 200 万美元的机器人。</div>
+        </div>
+      </div>
+
+      <div class="algo-step reveal">
+        <div class="algo-step-left">
+          <div class="algo-step-num">2</div>
+          <div class="algo-step-line"></div>
+        </div>
+        <div class="algo-step-content">
+          <div class="algo-step-title">尽力删除零件或流程</div>
+          <div class="algo-step-desc">如果你没有 10% 的时间把删掉的东西加回来，说明你删得不够多。人们总倾向于"以防万一"保留东西，但这会导致系统越来越臃肿。</div>
+          <div class="algo-step-example"><strong>马斯克原话：</strong>"我们在进行删除狂潮！！没有什么是神圣不可删的。今晚请对所有可疑的管道、传感器、歧管进行超级硬核删除和简化。"</div>
+        </div>
+      </div>
+
+      <div class="algo-step reveal">
+        <div class="algo-step-left">
+          <div class="algo-step-num">3</div>
+          <div class="algo-step-line"></div>
+        </div>
+        <div class="algo-step-content">
+          <div class="algo-step-title">简化或优化</div>
+          <div class="algo-step-desc">最好的零件就是没有零件，最好的流程就是没有流程。简单创造可靠性和低成本。找到每个零件和每个流程的设计必要性。</div>
+          <div class="algo-step-example"><strong>关键原则：</strong>过度删除，然后只加回绝对必要的东西。主动寻求激进的突破，而不是渐进式改进。</div>
+        </div>
+      </div>
+
+      <div class="algo-step reveal">
+        <div class="algo-step-left">
+          <div class="algo-step-num">4</div>
+          <div class="algo-step-line"></div>
+        </div>
+        <div class="algo-step-content">
+          <div class="algo-step-title">加速</div>
+          <div class="algo-step-desc">速度翻倍的工厂基本等于两个工厂。时间线如果很长，那就是错的。可以浪费设备和金钱，但不能浪费时间。</div>
+          <div class="algo-step-example"><strong>实例：</strong>xAI 需要 10 万块 H100 芯片来训练 AI 模型。供应商说 18-24 个月，马斯克拆解问题——找闲置工厂、租发电机、租全美 1/4 的移动冷却设备——6 个月完成。</div>
+        </div>
+      </div>
+
+      <div class="algo-step reveal">
+        <div class="algo-step-left">
+          <div class="algo-step-num">5</div>
+          <div class="algo-step-line"></div>
+        </div>
+        <div class="algo-step-content">
+          <div class="algo-step-title">自动化</div>
+          <div class="algo-step-desc">自动化放在最后！必须先确认需求合理、零件必要、流程最简、速度够快，最后才考虑自动化。否则你只是在自动化一个不必要的流程。</div>
+          <div class="algo-step-example"><strong>反面教训：</strong>Tesla 曾为电池包上的玻璃纤维垫设计了复杂的自动化机器人。结果发现这个垫子本身就不需要——先自动化是最大的错误。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== PART II: HARDCORE ===== -->
+<section class="section" id="hardcore">
+  <div class="section-header reveal">
+    <div class="section-number">Part II</div>
+    <h2 class="section-title">极限硬核工作</h2>
+    <p class="section-desc">领导力、团队、组织、制造——马斯克式经营哲学</p>
+  </div>
+
+  <div class="stats-row reveal">
+    <div class="stat-card">
+      <div class="stat-value">100h</div>
+      <div class="stat-label">危机期每周工时</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">10x</div>
+      <div class="stat-label">制造效率目标提升</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">高管独立办公室</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">24h</div>
+      <div class="stat-label">关键项目会议周期</div>
+    </div>
+  </div>
+
+  <div class="overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-red);">
+      <div class="oc-icon">🛏️</div>
+      <div class="oc-title">睡在工厂地板上</div>
+      <div class="oc-desc">危机时刻，马斯克睡在工厂走道上——不是会议室，而是工人能看到的地方。"如果CEO愿意承受这种痛苦，我也可以。"</div>
+    </div>
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-orange);">
+      <div class="oc-icon">⚔️</div>
+      <div class="oc-title">特种部队式团队</div>
+      <div class="oc-desc">招聘看非凡能力的证据，不是学历。只留最顶尖的人。反馈优先于感受——物理不在乎你的感情，火箭也不在乎。</div>
+    </div>
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-blue);">
+      <div class="oc-icon">🏭</div>
+      <div class="oc-title">工厂就是产品</div>
+      <div class="oc-desc">Tesla 最大的顿悟：真正重要的是制造机器的机器——工厂本身。制造系统的创新空间比产品设计大得多。</div>
+    </div>
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-green);">
+      <div class="oc-icon">🎯</div>
+      <div class="oc-title">攻击瓶颈</div>
+      <div class="oc-desc">9999 件事对了，1 件错了，那 1 件决定整体速度。生产线速度 = 最慢且最倒霉的环节。供应商遇过的灾难：火灾、地震、海啸、龙卷风、沉船、边境枪战。</div>
+    </div>
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-purple);">
+      <div class="oc-icon">⚡</div>
+      <div class="oc-title">疯狂的紧迫感</div>
+      <div class="oc-desc">可以浪费设备和金钱，不能浪费时间。并行推进所有能并行的事项。如果时间线很长，那就是错的。</div>
+    </div>
+    <div class="overview-card reveal" style="border-top: 3px solid var(--accent-cyan);">
+      <div class="oc-icon">🔄</div>
+      <div class="oc-title">允许失败的创新</div>
+      <div class="oc-desc">Starship 和 Dragon 是两个极端：Dragon 载人，绝对零容忍失败；早期 Starship 则快速迭代，炸了就炸了——不迭代就永远达不到目标。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== BIG QUOTE 2 ===== -->
+<div class="big-quote reveal">
+  <div class="big-quote-text">
+    "创业就像<span class="gold">吃玻璃</span>和<span class="gold">凝视深渊</span>。<br>玻璃在减少，但深渊永远在那里。"
+  </div>
+  <div class="big-quote-author">Elon Musk</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== PART III: COMPANIES ===== -->
+<section class="section" id="companies">
+  <div class="section-header reveal">
+    <div class="section-number">Part III</div>
+    <h2 class="section-title">创建公司 · 实战时间线</h2>
+    <p class="section-desc">每一次都是 All-In——把前一家公司的全部收益押注到下一个不可能的使命</p>
+  </div>
+
+  <div class="two-col">
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1995</div>
+        <div class="timeline-title">创立 Zip2</div>
+        <div class="timeline-desc">投不到 Netscape 的工作，只好自己创业。目标很低：赚到够付房租的钱。做了互联网上第一个地图和路线导航。</div>
+        <span class="timeline-tag tag-paypal">起步资金: $2,000</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">1999</div>
+        <div class="timeline-title">创立 X.com → PayPal</div>
+        <div class="timeline-desc">把 Zip2 的全部收益投入。用户对复杂金融平台没兴趣，但对邮件支付疯狂——快速调整方向。与 Confinity 合并。</div>
+        <span class="timeline-tag tag-paypal">被罢免CEO后仍是最大股东</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2002</div>
+        <div class="timeline-title">创立 SpaceX</div>
+        <div class="timeline-desc">NASA 网站上没有火星计划的日期。预期成功率 &lt;10%。把 PayPal 税后收入的一半投入——$100M。</div>
+        <span class="timeline-tag tag-spacex">前三次发射全部失败</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2004</div>
+        <div class="timeline-title">投资 Tesla</div>
+        <div class="timeline-desc">使命：加速向可持续能源转型。分阶段策略：高端跑车 → 中档车 → 大众车。后来成为 CEO。</div>
+        <span class="timeline-tag tag-tesla">投入几乎所有剩余资金</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2006</div>
+        <div class="timeline-title">联合创立 SolarCity</div>
+        <div class="timeline-desc">推动太阳能在美国住宅的普及。后被 Tesla 收购，成为 Tesla Energy。</div>
+        <span class="timeline-tag tag-solarcity">可持续能源三叉戟</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2008</div>
+        <div class="timeline-title">至暗时刻</div>
+        <div class="timeline-desc">SpaceX 第三次发射失败，Tesla 濒临破产，金融危机席卷全球。把最后的钱平分给两家公司。距离倾家荡产只剩几小时。</div>
+        <span class="timeline-tag tag-tesla">圣诞夜前几小时获得融资</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2008.09</div>
+        <div class="timeline-title">SpaceX 第四次发射成功</div>
+        <div class="timeline-desc">"收拾好你们的东西，回到岛上，发射它。你们有六周时间。" 最后一枚火箭，最后的机会——成功了。</div>
+        <span class="timeline-tag tag-spacex">NASA 随后授予合同</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1.5rem;">All-In 资金流向</h3>
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <div style="font-size:0.7rem; color:var(--text-dim); letter-spacing:0.15em; text-transform:uppercase;">PayPal 税后收入</div>
+          <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:var(--accent-gold);">$180M</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:12px; height:12px; border-radius:50%; background:var(--accent-cyan);"></div>
+            <div style="flex:1; font-size:0.85rem;">SpaceX</div>
+            <div style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--accent-cyan);">$100M</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:12px; height:12px; border-radius:50%; background:var(--accent-red);"></div>
+            <div style="flex:1; font-size:0.85rem;">Tesla</div>
+            <div style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--accent-red);">$70M</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:12px; height:12px; border-radius:50%; background:var(--accent-green);"></div>
+            <div style="flex:1; font-size:0.85rem;">SolarCity</div>
+            <div style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--accent-green);">$10M</div>
+          </div>
+          <div style="margin-top:0.5rem; padding-top:0.75rem; border-top:1px solid var(--border); display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:12px; height:12px; border-radius:50%; background:var(--text-dim);"></div>
+            <div style="flex:1; font-size:0.85rem; color:var(--text-dim);">个人剩余</div>
+            <div style="font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--text-dim);">≈ $0</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:2rem;">
+        <h4 style="font-family:'Playfair Display',serif; margin-bottom:1rem;">Tesla 分阶段策略</h4>
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-gold); white-space:nowrap;">PHASE 1</div>
+            <div style="font-size:0.85rem;">高端跑车 (Roadster) — 证明电动车可以很酷</div>
+          </div>
+          <div style="height:1px; background:var(--border); margin-left:4rem;"></div>
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-blue); white-space:nowrap;">PHASE 2</div>
+            <div style="font-size:0.85rem;">中档轿车 (Model S/X) — 建立品牌与技术</div>
+          </div>
+          <div style="height:1px; background:var(--border); margin-left:4rem;"></div>
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-green); white-space:nowrap;">PHASE 3</div>
+            <div style="font-size:0.85rem;">大众市场 (Model 3/Y) — 规模化普及</div>
+          </div>
+          <div style="height:1px; background:var(--border); margin-left:4rem;"></div>
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-purple); white-space:nowrap;">PHASE 4</div>
+            <div style="font-size:0.85rem;">更便宜的车 + 储能 + 太阳能 — 完整生态</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== PART IV: HUMANITY ===== -->
+<section class="section" id="humanity">
+  <div class="section-header reveal">
+    <div class="section-number">Part IV</div>
+    <h2 class="section-title">为了人类的未来</h2>
+    <p class="section-desc">丰裕时代即将到来，但六大生存风险也在逼近——人类需要备份计划</p>
+  </div>
+
+  <div class="two-col" style="margin-bottom:4rem;">
+    <div class="reveal">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1.5rem; color:var(--accent-green);">✦ 丰裕时代</h3>
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🤖 人形机器人消除劳动力瓶颈</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">经济的限制因素是劳动力。如果移除这个瓶颈，传统意义上的经济将不复存在——物质将极大丰富。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🧠 指数级智能增长</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">数字计算总量 ÷ 生物计算总量的比率在飞速上升。人类最终可能只占总智能的很小一部分。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🏥 医学数字化革命</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">合成 RNA 是医学从模拟到数字的革命。基因重编程可以预防老年痴呆等遗传疾病。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-weight:700; margin-bottom:0.4rem;">🚗 最后的人类司机</div>
+          <div style="font-size:0.85rem; color:var(--text-secondary);">自动驾驶将比人类安全 10 倍以上。人类开车终将被视为像骑马一样过时。</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" id="risks">
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1.5rem; color:var(--accent-red);">⚠ 六大生存风险</h3>
+      <div class="risk-grid" style="grid-template-columns:1fr;">
+        <div class="risk-card">
+          <div class="risk-icon">💥</div>
+          <div class="risk-level risk-critical">极高风险</div>
+          <div class="risk-title">第三次世界大战</div>
+          <div class="risk-desc">核战争可能终结文明。这是最急迫的威胁。</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">🤖</div>
+          <div class="risk-level risk-critical">极高风险</div>
+          <div class="risk-title">超级AI失控</div>
+          <div class="risk-desc">AI可能成为"不朽的独裁者"。这就是创立 Neuralink 的原因——确保人类能跟上AI。</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">👶</div>
+          <div class="risk-level risk-high">高风险</div>
+          <div class="risk-title">人口崩溃</div>
+          <div class="risk-desc">出生率远低于替代率。这比大多数人意识到的严重得多，是文明的慢性自杀。</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">📜</div>
+          <div class="risk-level risk-high">高风险</div>
+          <div class="risk-title">监管过度累积</div>
+          <div class="risk-desc">法规只增不减，像铁锈一样不断侵蚀创新能力。</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">🛢️</div>
+          <div class="risk-level risk-high">高风险</div>
+          <div class="risk-title">不可持续能源</div>
+          <div class="risk-desc">化石燃料终将耗尽。越快转型，文明越安全。</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-icon">☄️</div>
+          <div class="risk-level risk-medium">中等风险</div>
+          <div class="risk-title">小行星/彗星撞击</div>
+          <div class="risk-desc">低概率但后果致命。单行星物种只是在等待灭绝事件。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== MARS ===== -->
+<section class="section" id="mars">
+  <div class="section-header reveal">
+    <div class="section-number">The Ultimate Backup</div>
+    <h2 class="section-title">成为多行星物种</h2>
+    <p class="section-desc">这是与"生命从海洋走上陆地"同级别的进化事件</p>
+  </div>
+
+  <div class="two-col" style="align-items:center;">
+    <div class="mars-visual reveal">
+      <div class="mars-orbit">
+        <div class="mars-planet"></div>
+        <div class="earth-planet"></div>
+      </div>
+      <div class="mars-label">Earth → Mars Gateway</div>
+    </div>
+
+    <div class="reveal">
+      <div style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-gold); letter-spacing:0.15em; margin-bottom:0.5rem;">为什么是火星？</div>
+          <div style="font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">金星是高压酸浴地狱。月球缺乏资源和大气。火星有大气、有水冰、有可利用的化学物质。而且火星基地更能在地球发生冲突时幸存。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-red); letter-spacing:0.15em; margin-bottom:0.5rem;">现实的残酷</div>
+          <div style="font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">高死亡概率。六个月的旅程，100 人挤在一起。不是豪华度假——类似大航海时代的远洋航行。大多数去的人可能永远不会回来。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-green); letter-spacing:0.15em; margin-bottom:0.5rem;">自给自足的标准</div>
+          <div style="font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">关键门槛：如果地球的飞船停止来了，火星城市能否存活？这需要约 100 万人和完整的工业体系。缺少任何一样东西——哪怕只是维生素 C——都是致命的。</div>
+        </div>
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:1.25rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--accent-purple); letter-spacing:0.15em; margin-bottom:0.5rem;">进化的尺度</div>
+          <div style="font-size:0.88rem; color:var(--text-secondary); line-height:1.8;">地球 45 亿年历史上只有六个重大里程碑：单细胞生命、多细胞生命、植物/动物分化、海洋到陆地、意识。成为多行星物种属于同一级别。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== BIG QUOTE 3 ===== -->
+<div class="big-quote reveal">
+  <div class="big-quote-text">
+    "如果你<span class="gold">热爱生命</span>，<br>就请<span class="gold">保护</span>它。"
+  </div>
+  <div class="big-quote-author">Elon Musk</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== 69 METHODS ===== -->
+<section class="section" id="methods">
+  <div class="section-header reveal">
+    <div class="section-number">Appendix</div>
+    <h2 class="section-title">69 条核心马斯克方法</h2>
+    <p class="section-desc">书末精选的最根本思想，编辑为简短、可记忆的格言</p>
+  </div>
+
+  <div class="methods-grid">
+    <div class="method-card reveal">普通人<span class="highlight">可以选择</span>成为非凡的人。你有能力做到超出自己想象的事。</div>
+    <div class="method-card reveal">你可以<span class="highlight">自学任何东西</span>。广泛阅读，与专家对话。</div>
+    <div class="method-card reveal">假设自己是错的。追求<span class="highlight">比昨天少错一点</span>。</div>
+    <div class="method-card reveal">内化责任。如果<span class="highlight">我们不制造东西</span>，就没有东西。</div>
+    <div class="method-card reveal">不要追求荣耀，<span class="highlight">追求工作</span>。有用的人生才值得活。</div>
+    <div class="method-card reveal">采取行动，<span class="highlight">增加未来美好的概率</span>。</div>
+    <div class="method-card reveal">每一天，我们要么提升创新速度，<span class="highlight">要么它就在减慢</span>。</div>
+    <div class="method-card reveal">在事物<span class="highlight">刚刚变得可能</span>的时候行动。不要等世界准备好。</div>
+    <div class="method-card reveal">如果某样东西显然应该存在，<span class="highlight">去建造它</span>。</div>
+    <div class="method-card reveal">建造<span class="highlight">没有其他人在建造</span>的东西。盟友会在你前进时聚集。</div>
+    <div class="method-card reveal">原型是证明。<span class="highlight">从某处开始</span>，质疑假设，适应现实。</div>
+    <div class="method-card reveal">从<span class="highlight">基本原理</span>推理，而不是从别人在做什么来推理。</div>
+    <div class="method-card reveal"><span class="highlight">魔杖数字</span>：看到理论上的完美值，然后朝它努力。</div>
+    <div class="method-card reveal"><span class="highlight">白痴指数</span>：了解组件的真实成本。差距越大，优化空间越大。</div>
+    <div class="method-card reveal"><span class="highlight">马斯克算法</span>：质疑需求 → 删除 → 简化 → 加速 → 自动化。</div>
+    <div class="method-card reveal">关键项目每 <span class="highlight">24 小时</span>开会执行算法，检查昨天的进展。</div>
+    <div class="method-card reveal">尽可能<span class="highlight">贴近实际工作</span>。不要让自己远离决策的痛苦。</div>
+    <div class="method-card reveal">所有需求都应被视为<span class="highlight">建议</span>。唯一不可违反的是物理定律。</div>
+    <div class="method-card reveal"><span class="highlight">最好的零件就是没有零件</span>；最好的流程就是没有流程。</div>
+    <div class="method-card reveal">过度删除，然后只<span class="highlight">加回绝对必要的</span>东西。</div>
+    <div class="method-card reveal"><span class="highlight">疯狂的紧迫感</span>是我们的运营原则。</div>
+    <div class="method-card reveal">速度翻倍的工厂<span class="highlight">等于两个工厂</span>。攻击瓶颈。</div>
+    <div class="method-card reveal"><span class="highlight">并行推进</span>。给团队一个关键指标来聚焦。</div>
+    <div class="method-card reveal">设计、工程和制造分开是<span class="highlight">功能障碍</span>的根源。</div>
+    <div class="method-card reveal"><span class="highlight">创新速度</span>才是最重要的。用速度、质量和成本击败竞争者。</div>
+    <div class="method-card reveal">测试荒谬的想法。当事情看似不可能，问：<span class="highlight">"需要什么条件？"</span></div>
+    <div class="method-card reveal">钱不是约束。<span class="highlight">优秀的工程师</span>才是。</div>
+    <div class="method-card reveal">让每个人都像<span class="highlight">首席工程师</span>一样思考。</div>
+    <div class="method-card reveal">获得与现实的<span class="highlight">直接反馈回路</span>。永远在粉碎自我。</div>
+    <div class="method-card reveal">问："这个努力是否让产品或服务<span class="highlight">变得更好</span>？" 如果没有，停下。</div>
+    <div class="method-card reveal"><span class="highlight">好品味</span>是可以学习的。训练自己注意什么让事物变得美。</div>
+    <div class="method-card reveal">物理不在乎<span class="highlight">受伤的感情</span>。让火箭飞起来。</div>
+    <div class="method-card reveal">用简单、清晰、谦逊的语言。<span class="highlight">直接找到信息源</span>。</div>
+    <div class="method-card reveal">招聘时寻找<span class="highlight">非凡能力的证据</span>。</div>
+    <div class="method-card reveal">结合<span class="highlight">工程和财务</span>的流利度。要真正领导产品，就领导公司。</div>
+    <div class="method-card reveal">从<span class="highlight">前线</span>领导。睡在工厂地板上。立即移动到问题所在。</div>
+    <div class="method-card reveal">坏消息要<span class="highlight">大声且频繁</span>地传递。好消息可以小声说一次。</div>
+    <div class="method-card reveal"><span class="highlight">对失败的恐惧</span>是失败的最大原因。感受恐惧，然后做。</div>
+    <div class="method-card reveal"><span class="highlight">双倍下注</span>。把筹码推回去。拼命工作——每个清醒的小时。</div>
+    <div class="method-card reveal">当事情足够重要时，<span class="highlight">即使胜算不在你这边</span>，也要去做。</div>
+    <div class="method-card reveal"><span class="highlight">永远不要放弃</span>。除非你死了或完全丧失能力。</div>
+    <div class="method-card reveal">把生活当作游戏来玩。走<span class="highlight">超级硬核</span>路线。<span class="highlight">幽默</span>是差异化武器。</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FINAL QUOTE ===== -->
+<div class="big-quote reveal">
+  <div class="big-quote-text">
+    "人类的未来不是<span class="gold">自动变好</span>的。<br>需要有人<span class="gold">拼命去建造</span>。"
+  </div>
+  <div class="big-quote-author">The Book of Elon · 核心信息</div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>《The Book of Elon》可视化读书看板 · 编撰 Eric Jorgenson · 序言 Naval Ravikant</p>
+  <p style="margin-top:0.5rem;">本看板仅作读书笔记用途，所有内容版权归原书作者所有</p>
+</footer>
+
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+revealEls.forEach(el => observer.observe(el));
+
+// Progress bar animation
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fills = entry.target.querySelectorAll('.progress-fill');
+      fills.forEach(fill => {
+        fill.style.width = fill.dataset.width + '%';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.progress-item').forEach(el => {
+  progressObserver.observe(el.closest('.reveal') || el);
+});
+
+// Nav active state
+const sections = document.querySelectorAll('.section, .big-quote');
+const navLinks = document.querySelectorAll('.nav-link');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 120;
+    if (window.scrollY >= top) {
+      current = section.id;
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
