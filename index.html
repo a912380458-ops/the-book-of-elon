@@ -116,13 +116,23 @@ body {
   animation: fadeUp 1s 0.7s forwards;
 }
 
+.hero-author {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-gold-dim);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.8s forwards;
+}
+
 .hero-meta {
   display: flex;
   gap: 3rem;
   justify-content: center;
   flex-wrap: wrap;
   opacity: 0;
-  animation: fadeUp 1s 0.9s forwards;
+  animation: fadeUp 1s 1s forwards;
 }
 
 .hero-meta-item {
@@ -916,6 +926,7 @@ body {
     <div class="hero-eyebrow">A Visual Reading Dashboard</div>
     <h1 class="hero-title">The Book of<br><span class="gold">Elon</span></h1>
     <p class="hero-subtitle">马斯克思想与方法论的完整可视化解读<br>——用他自己的话，讲述如何为人类建造未来</p>
+    <div class="hero-author">by Haocong Zhang</div>
     <div class="hero-meta">
       <div class="hero-meta-item">
         <div class="hero-meta-value">4</div>
